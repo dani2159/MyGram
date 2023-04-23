@@ -25,6 +25,72 @@ info:
   title: MyGram API
   version: "1.0"
 paths:
+  /users/login:
+    post:
+      description: Login to system
+      parameters:
+        - description: User's email
+          in: formData
+          name: email
+          required: true
+          type: string
+        - description: User's password
+          in: formData
+          name: password
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: If email and password are correct, you will get a token
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "401":
+          description: If email and password are not correct, data will set to nil
+          schema:
+            $ref: "#/definitions/entity.Response"
+      summary: User Login
+      tags:
+        - users
+  /users/register:
+    post:
+      description: Register an account
+      parameters:
+        - description: User's email
+          in: formData
+          name: email
+          required: true
+          type: string
+        - description: User's username
+          in: formData
+          name: username
+          required: true
+          type: string
+        - description: User's password
+          in: formData
+          name: password
+          required: true
+          type: string
+        - description: User's age
+          in: formData
+          name: age
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: "If all field filled and correct, account will created "
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "400":
+          description: If there is an error, data will set to nil
+          schema:
+            $ref: "#/definitions/entity.Response"
+      summary: User Register
+      tags:
+        - users
   /api/v1/comments:
     get:
       description: User can retrieve all comments and no need to login
@@ -438,72 +504,6 @@ paths:
       summary: Edit a social media
       tags:
         - social-medias
-  /users/login:
-    post:
-      description: Login to system
-      parameters:
-        - description: User's email
-          in: formData
-          name: email
-          required: true
-          type: string
-        - description: User's password
-          in: formData
-          name: password
-          required: true
-          type: string
-      produces:
-        - application/json
-      responses:
-        "200":
-          description: If email and password are correct, you will get a token
-          schema:
-            $ref: "#/definitions/entity.Response"
-        "401":
-          description: If email and password are not correct, data will set to nil
-          schema:
-            $ref: "#/definitions/entity.Response"
-      summary: User Login
-      tags:
-        - users
-  /users/register:
-    post:
-      description: Register an account
-      parameters:
-        - description: User's email
-          in: formData
-          name: email
-          required: true
-          type: string
-        - description: User's username
-          in: formData
-          name: username
-          required: true
-          type: string
-        - description: User's password
-          in: formData
-          name: password
-          required: true
-          type: string
-        - description: User's age
-          in: formData
-          name: age
-          required: true
-          type: integer
-      produces:
-        - application/json
-      responses:
-        "201":
-          description: "If all field filled and correct, account will created "
-          schema:
-            $ref: "#/definitions/entity.Response"
-        "400":
-          description: If there is an error, data will set to nil
-          schema:
-            $ref: "#/definitions/entity.Response"
-      summary: User Register
-      tags:
-        - users
 securityDefinitions:
   Bearer:
     description: Type "Bearer" followed by a space and JWT token.

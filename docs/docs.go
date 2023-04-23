@@ -24,6 +24,104 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/users/login": {
+            "post": {
+                "description": "Login to system",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "User Login",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User's email",
+                        "name": "email",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User's password",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "If email and password are correct, you will get a token",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "If email and password are not correct, data will set to nil",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/register": {
+            "post": {
+                "description": "Register an account",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "User Register",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User's email",
+                        "name": "email",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User's username",
+                        "name": "username",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "User's password",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "User's age",
+                        "name": "age",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "If all field filled and correct, account will created ",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "If there is an error, data will set to nil",
+                        "schema": {
+                            "$ref": "#/definitions/entity.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/comments": {
             "get": {
                 "description": "User can retrieve all comments and no need to login",
@@ -631,105 +729,7 @@ const docTemplate = `{
                     }
                 }
             }
-        },
-        "/users/login": {
-            "post": {
-                "description": "Login to system",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "users"
-                ],
-                "summary": "User Login",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User's email",
-                        "name": "email",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "User's password",
-                        "name": "password",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "If email and password are correct, you will get a token",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Response"
-                        }
-                    },
-                    "401": {
-                        "description": "If email and password are not correct, data will set to nil",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/users/register": {
-            "post": {
-                "description": "Register an account",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "users"
-                ],
-                "summary": "User Register",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "User's email",
-                        "name": "email",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "User's username",
-                        "name": "username",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "User's password",
-                        "name": "password",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "User's age",
-                        "name": "age",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "If all field filled and correct, account will created ",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Response"
-                        }
-                    },
-                    "400": {
-                        "description": "If there is an error, data will set to nil",
-                        "schema": {
-                            "$ref": "#/definitions/entity.Response"
-                        }
-                    }
-                }
-            }
-        }
+        }        
     },
     "definitions": {
         "entity.Response": {
