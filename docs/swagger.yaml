@@ -1,0 +1,513 @@
+basePath: /
+definitions:
+  entity.Response:
+    properties:
+      data: {}
+      message:
+        example: created
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+host: localhost:8082
+info:
+  contact:
+    email: danisetiawan609@gmail.com
+    name: API Support
+    url: http://www.swagger.io/support
+  description: |-
+    This is an API for MyGram APP. To use all of the services, please login first and get the token.
+    Once you've completed the previous steps, you'll need to locate the "Authorize" button on the right-hand side of the screen and click it. This will trigger a pop-up window to appear, in which you should enter your token preceded by the word "Bearer". For instance, your token might look something like "eyJhbGciOiJIUzI1...", so you would enter "Bearer eyJhbGciOiJIUzI1..." into the designated field.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: MyGram API
+  version: "1.0"
+paths:
+  /api/v1/comments:
+    get:
+      description: User can retrieve all comments and no need to login
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Will send all comments
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "404":
+          description: If there is no comment, error will appear
+          schema:
+            $ref: "#/definitions/entity.Response"
+      summary: Get all comments
+      tags:
+        - comments
+    post:
+      description: User can create a comment.
+      parameters:
+        - description: photo id
+          in: formData
+          name: photo_id
+          required: true
+          type: integer
+        - description: your comment
+          in: formData
+          name: message
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: If all of the parameters filled and you're login
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "401":
+          description:
+            If you are not login or some parameters not filled, error will
+            appear
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "404":
+          description: If photo id's not found
+          schema:
+            $ref: "#/definitions/entity.Response"
+      security:
+        - Bearer: []
+      summary: Create a comment
+      tags:
+        - comments
+  /api/v1/comments/{id}:
+    delete:
+      description: User can delete their own comment.
+      parameters:
+        - description: comment id
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: If comment is exist and it's your own comment
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "400":
+          description:
+            If the comment's id is not your own and if the comment doesn't
+            exist, error will appear
+          schema:
+            $ref: "#/definitions/entity.Response"
+      security:
+        - Bearer: []
+      summary: Delete a comment
+      tags:
+        - comments
+    get:
+      description: User can retrieve a comment and no need to login
+      parameters:
+        - description: comment id
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: If a comment's id matches with the parameter
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "404":
+          description:
+            If the comments's id doesn't match with the parameter, error
+            will appear
+          schema:
+            $ref: "#/definitions/entity.Response"
+      summary: Get one comment
+      tags:
+        - comments
+    put:
+      description: User can edit their own comment.
+      parameters:
+        - description: comment id
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: your comment
+          in: formData
+          name: message
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: If all the parameters are valid
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "404":
+          description: If there is something wrong, error will appear
+          schema:
+            $ref: "#/definitions/entity.Response"
+      security:
+        - Bearer: []
+      summary: Edit a comment
+      tags:
+        - comments
+  /api/v1/photos:
+    get:
+      description: User can retrieve all photos and no need to login
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Will send all photos
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "404":
+          description: If there is no comment, error will appear
+          schema:
+            $ref: "#/definitions/entity.Response"
+      summary: Get all photos
+      tags:
+        - photos
+    post:
+      description: User can upload a photo.
+      parameters:
+        - description: photo title
+          in: formData
+          name: title
+          required: true
+          type: string
+        - description: photo caption
+          in: formData
+          name: caption
+          required: true
+          type: string
+        - description: photo url
+          in: formData
+          name: photo_url
+          required: true
+          type: file
+        - description: "format: Bearer token-here"
+          in: header
+          name: Authorization
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: If all of the parameters filled and you're logged in
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "404":
+          description:
+            If you are not login or some parameters not filled, error will
+            appear
+          schema:
+            $ref: "#/definitions/entity.Response"
+      security:
+        - Bearer: []
+      summary: Upload a photo
+      tags:
+        - photos
+  /api/v1/photos/{id}:
+    delete:
+      description: User can delete their own photo.
+      parameters:
+        - description: photo id
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: If photo is exist and it's your own photo, photo will deleted
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "400":
+          description:
+            If the photo is not your own or if the photo doesn't exist,
+            error will appear
+          schema:
+            $ref: "#/definitions/entity.Response"
+      security:
+        - Bearer: []
+      summary: Delete a photo
+      tags:
+        - photos
+    get:
+      description: User can retrieve a photo and no need to login
+      parameters:
+        - description: photo id
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: If a photo's id matches with the parameter
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "404":
+          description:
+            If the photo's id doesn't match with the parameter, error will
+            appear
+          schema:
+            $ref: "#/definitions/entity.Response"
+      summary: Get one photo
+      tags:
+        - photos
+    put:
+      description: User can edit their own photo.
+      parameters:
+        - description: photo id
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: photo title
+          in: formData
+          name: title
+          required: true
+          type: string
+        - description: photo caption
+          in: formData
+          name: caption
+          required: true
+          type: string
+        - description: photo url
+          in: formData
+          name: photo_url
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: If the parameters are valid
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "401":
+          description: If there is something wrong, error will appear
+          schema:
+            $ref: "#/definitions/entity.Response"
+      security:
+        - Bearer: []
+      summary: Edit a photo
+      tags:
+        - photos
+  /api/v1/social-media:
+    get:
+      description: User can retrieve all social media and no need to login
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Will send all social media datas
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "404":
+          description: If there is no social media, error will appear
+          schema:
+            $ref: "#/definitions/entity.Response"
+      summary: Get all social media
+      tags:
+        - social-medias
+    post:
+      description: User can create a social media.
+      parameters:
+        - description: social media name
+          in: formData
+          name: name
+          required: true
+          type: string
+        - description: social media url
+          in: formData
+          name: social_media_url
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: If all of the parameters filled and you are logged in
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "401":
+          description:
+            If you are not login or some parameters not filled, error will
+            appear
+          schema:
+            $ref: "#/definitions/entity.Response"
+      security:
+        - Bearer: []
+      summary: Create a social media
+      tags:
+        - social-medias
+  /api/v1/social-media/{id}:
+    delete:
+      description: User can delete their own social media.
+      parameters:
+        - description: social media id
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: If social media is exist and it's your own social media
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "400":
+          description:
+            If social media's id is not your own or if the comment doesn't
+            exist, error will appear
+          schema:
+            $ref: "#/definitions/entity.Response"
+      security:
+        - Bearer: []
+      summary: Delete a social media
+      tags:
+        - social-medias
+    get:
+      description: User can retrieve a social media and doesn't need to login
+      parameters:
+        - description: social media id
+          in: path
+          name: id
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: If a social media's id matches with the parameter
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "404":
+          description:
+            If the social media's id doesn't match with the parameter,
+            error will appear
+          schema:
+            $ref: "#/definitions/entity.Response"
+      summary: Get one social media
+      tags:
+        - social-medias
+    put:
+      description: User can edit their own social media.
+      parameters:
+        - description: social media id
+          in: path
+          name: id
+          required: true
+          type: integer
+        - description: social media name
+          in: formData
+          name: name
+          required: true
+          type: string
+        - description: social media url
+          in: formData
+          name: social_media_url
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: If all the parameters are valid
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "400":
+          description: If there is something wrong, error will appear
+          schema:
+            $ref: "#/definitions/entity.Response"
+      security:
+        - Bearer: []
+      summary: Edit a social media
+      tags:
+        - social-medias
+  /users/login:
+    post:
+      description: Login to system
+      parameters:
+        - description: User's email
+          in: formData
+          name: email
+          required: true
+          type: string
+        - description: User's password
+          in: formData
+          name: password
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: If email and password are correct, you will get a token
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "401":
+          description: If email and password are not correct, data will set to nil
+          schema:
+            $ref: "#/definitions/entity.Response"
+      summary: User Login
+      tags:
+        - users
+  /users/register:
+    post:
+      description: Register an account
+      parameters:
+        - description: User's email
+          in: formData
+          name: email
+          required: true
+          type: string
+        - description: User's username
+          in: formData
+          name: username
+          required: true
+          type: string
+        - description: User's password
+          in: formData
+          name: password
+          required: true
+          type: string
+        - description: User's age
+          in: formData
+          name: age
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: "If all field filled and correct, account will created "
+          schema:
+            $ref: "#/definitions/entity.Response"
+        "400":
+          description: If there is an error, data will set to nil
+          schema:
+            $ref: "#/definitions/entity.Response"
+      summary: User Register
+      tags:
+        - users
+securityDefinitions:
+  Bearer:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
